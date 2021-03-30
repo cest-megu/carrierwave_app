@@ -40,9 +40,18 @@ class ImageUploader < CarrierWave::Uploader::Base
     0..5.megabytes
   end
 
+  # jpegに変換
+  process convert: "jpg"
+
+  # 画像サイズを変更
+  process resize_to_limit: [200,300]
+
+  # ファイル名の拡張子をjpgに変更
   def filename
-    "#{secure_token}.#{file.extension}" if original_filename.present?
+    super.chomp(File.extname(super)) + ".jpg" if original_filename.present?
   end
+
+
 
   protected
 
